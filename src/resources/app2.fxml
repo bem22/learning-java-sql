@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.effect.*?>
 <?import javafx.scene.text.*?>
 <?import java.lang.*?>
 <?import java.util.*?>
@@ -7,28 +8,26 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-
 <AnchorPane maxHeight="580.0" maxWidth="1200.0" minHeight="-Infinity" minWidth="-Infinity" prefHeight="580.0" prefWidth="1200.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="_controller">
    <children>
-      <ScrollPane fx:id="main_display_scroll_pane" layoutX="117.0" layoutY="144.0" prefHeight="400.0" prefWidth="1080.0">
+      <ScrollPane fx:id="main_display_scroll_pane" layoutX="97.0" layoutY="163.0" prefHeight="400.0" prefWidth="1080.0">
          <content>
-            <GridPane prefHeight="400.0" prefWidth="1050.0">
-              <columnConstraints>
-                <ColumnConstraints hgrow="SOMETIMES" maxWidth="1003.0" minWidth="10.0" prefWidth="508.0" />
-                <ColumnConstraints hgrow="SOMETIMES" maxWidth="975.0" minWidth="0.0" prefWidth="495.0" />
-              </columnConstraints>
-              <rowConstraints>
-                <RowConstraints maxHeight="319.0" minHeight="3.0" prefHeight="26.0" vgrow="SOMETIMES" />
-                  <RowConstraints maxHeight="319.0" minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-              </rowConstraints>
-            </GridPane>
+            <TableView fx:id="table" prefHeight="396.0" prefWidth="1077.0" tableMenuButtonVisible="true">
+               <columnResizePolicy>
+                  <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
+               </columnResizePolicy>
+            </TableView>
          </content>
       </ScrollPane>
-      <Button fx:id="close_button" layoutX="1159.0" layoutY="11.0" mnemonicParsing="false" text="x" textAlignment="CENTER">
+      <Button fx:id="closeWindow_button" alignment="CENTER" focusTraversable="false" layoutX="1168.0" layoutY="4.0" mnemonicParsing="false" onAction="#closeWindow" text="x" textAlignment="CENTER" textFill="#4d4d4d">
          <font>
             <Font name="DejaVu Sans Bold" size="13.0" />
          </font>
+         <cursor>
+            <Cursor fx:constant="OPEN_HAND" />
+         </cursor>
       </Button>
-      <ComboBox fx:id="table_combobox" layoutX="116.0" layoutY="107.0" prefWidth="150.0" promptText="Table" />
+      <ComboBox fx:id="table_combobox" layoutX="97.0" layoutY="130.0" prefWidth="150.0" promptText="Table" />
+      <Button fx:id="queryTable" layoutX="253.0" layoutY="130.0" mnemonicParsing="false" onAction="#queryTable" text="Query!" />
    </children>
 </AnchorPane>

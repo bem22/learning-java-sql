@@ -1,16 +1,17 @@
+import cracker.Student;
 import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.control.Button;
-import javafx.scene.control.ComboBox;
-import javafx.scene.control.ScrollPane;
-import javafx.scene.control.TextField;
-import javafx.scene.layout.GridPane;
+import javafx.scene.control.*;
+import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.stage.Stage;
 import utills.DBUtils;
+import utills.TableInformation;
 
 import java.net.URL;
 import java.sql.Connection;
-import java.sql.PreparedStatement;
 import java.util.ArrayList;
 import java.util.ResourceBundle;
 
@@ -21,21 +22,39 @@ public class _controller implements Initializable{
 
 
     @FXML
-    private Button close_button;
+    private Button closeWindow_button;
+
+    @FXML
+    private Button queryTable;
 
     @FXML
     private ComboBox<String> table_combobox;
 
     @FXML
-    private ScrollPane main_display_scroll_pane;
+    private TableView table;
+
 
 
     public void initialize(URL location, ResourceBundle resources) {
         ArrayList<String> s = DBUtils.getTableNames(c);
-        for(int i = 0; i<s.size();i++){
-            System.out.print(s.get(i) + " ");
-        }
         this.table_combobox.setItems(FXCollections.observableArrayList(s));
 
     }
+    @FXML
+    public void closeWindow(ActionEvent close){
+
+        Stage stage = (Stage) closeWindow_button.getScene().getWindow();
+        stage.close();
+    }
+    public ObservableList list =
+    @FXML
+    public void queryTable(ActionEvent query){
+        table.getColumns().clear();
+        TableInformation i = m.getData(table_combobox.getValue());
+        table.getColumns().addAll(i.getColumns());
+        table.setItems();
+
+
+    }
+
 }
