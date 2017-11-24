@@ -42,17 +42,17 @@ public class _controller implements Initializable{
     }
     @FXML
     public void closeWindow(ActionEvent close){
-
         Stage stage = (Stage) closeWindow_button.getScene().getWindow();
         stage.close();
     }
-    public ObservableList list =
+
     @FXML
     public void queryTable(ActionEvent query){
         table.getColumns().clear();
-        TableInformation i = m.getData(table_combobox.getValue());
-        table.getColumns().addAll(i.getColumns());
-        table.setItems();
+        table.getColumns().addAll(m.getColumns(table_combobox.getValue()));
+        table.setItems(m.getData((table_combobox.getValue())));
+
+
 
 
     }

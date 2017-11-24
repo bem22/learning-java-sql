@@ -12,6 +12,8 @@ import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
 import java.util.Observable;
 
+import static com.sun.xml.internal.fastinfoset.alphabet.BuiltInRestrictedAlphabets.table;
+
 public class _model {
 
     String url = "jdbc:postgresql://localhost:5432/mihai";
@@ -30,39 +32,46 @@ public class _model {
         return this.connection !=null;
     }
 
-    public TableInformation getData(String table){
-
-        ObservableList data = FXCollections.observableArrayList();
+    public ObservableList<TableColumn> getColumns(String table){
         ObservableList <TableColumn> columns = FXCollections.observableArrayList();
-
-
+        String query = "SELECT * FROM " + table;
         try{
-            String query = "SELECT * FROM " + table;
             ResultSet rs = connection.createStatement().executeQuery(query);
-            while(rs.next()){
-            }
-
             for(int i=0; i<rs.getMetaData().getColumnCount(); i++){
-                final int j = 1;
+                final int j = i;
                 TableColumn col = new TableColumn(rs.getMetaData().getColumnName(i+1));
                 col.setCellValueFactory(new Callback<TableColumn.CellDataFeatures<ObservableList,String>,ObservableValue<String>>(){
                     public ObservableValue<String> call(TableColumn.CellDataFeatures<ObservableList, String> param) {
                         return new SimpleStringProperty(param.getValue().get(j).toString());
                     }
                 });
-
                 columns.addAll(col);
             }
+        }catch(Exception e){
+            e.printStackTrace();
+        }
+        return columns;
 
+    }
 
+    public ObservableList<ObservableList> getData(String table){
+        ObservableList <ObservableList> data = FXCollections.observableArrayList();
+        try{
+            String query = "SELECT * FROM " + table;
+            ResultSet rs = connection.createStatement().executeQuery(query);
+            while(rs.next()){
+                ObservableList<String> row = FXCollections.observableArrayList();
+                for(int i = 1; i<=rs.getMetaData().getColumnCount(); i++){
+                    row.add(rs.getString(i));
+                }
+                data.add(row);
+            }
 
         }catch (Exception e){
             e.printStackTrace();
         }
 
-
-
-        return new TableInformation(columns, data);
+        return data;
     }
 
 
