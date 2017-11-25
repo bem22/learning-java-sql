@@ -15,9 +15,9 @@ import java.sql.ResultSet;
 
 public class _model {
     OkHttpClient client;
-    String url = "jdbc:postgresql://localhost:5432/christmas";
-    String user = "mihai";
-    String password = "password123";
+    String url = "jdbc:postgresql://mod-intro-databases.cs.bham.ac.uk:5432/";
+    String user = "meb648";
+    String password = "Asd123asd";
     Connection connection;
     public _model(){
         try{

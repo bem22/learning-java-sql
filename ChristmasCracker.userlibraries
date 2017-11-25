@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<eclipse-userlibraries>
+  <library name="Maven: com.google.code.gson:gson:2.8.2">
+    <archive path="/home/mihai/.m2/repository/com/google/code/gson/gson/2.8.2/gson-2.8.2.jar" />
+  </library>
+  <library name="Maven: com.squareup.okhttp3:okhttp:3.9.1">
+    <archive path="/home/mihai/.m2/repository/com/squareup/okhttp3/okhttp/3.9.1/okhttp-3.9.1.jar" />
+  </library>
+  <library name="Maven: com.squareup.okio:okio:1.13.0">
+    <archive path="/home/mihai/.m2/repository/com/squareup/okio/okio/1.13.0/okio-1.13.0.jar" />
+  </library>
+  <library name="Maven: org.apache.maven.surefire:common-java5:2.19.1">
+    <archive path="/home/mihai/.m2/repository/org/apache/maven/surefire/common-java5/2.19.1/common-java5-2.19.1.jar" />
+  </library>
+  <library name="Maven: org.apache.maven.surefire:surefire-api:2.19.1">
+    <archive path="/home/mihai/.m2/repository/org/apache/maven/surefire/surefire-api/2.19.1/surefire-api-2.19.1.jar" />
+  </library>
+  <library name="Maven: org.json:json:20171018">
+    <archive path="/home/mihai/.m2/repository/org/json/json/20171018/json-20171018.jar" />
+  </library>
+  <library name="Maven: org.junit.jupiter:junit-jupiter-api:5.1.0-M1">
+    <archive path="/home/mihai/.m2/repository/org/junit/jupiter/junit-jupiter-api/5.1.0-M1/junit-jupiter-api-5.1.0-M1.jar" />
+  </library>
+  <library name="Maven: org.junit.platform:junit-platform-commons:1.1.0-M1">
+    <archive path="/home/mihai/.m2/repository/org/junit/platform/junit-platform-commons/1.1.0-M1/junit-platform-commons-1.1.0-M1.jar" />
+  </library>
+  <library name="Maven: org.junit.platform:junit-platform-engine:1.0.2">
+    <archive path="/home/mihai/.m2/repository/org/junit/platform/junit-platform-engine/1.0.2/junit-platform-engine-1.0.2.jar" />
+  </library>
+  <library name="Maven: org.junit.platform:junit-platform-launcher:1.0.2">
+    <archive path="/home/mihai/.m2/repository/org/junit/platform/junit-platform-launcher/1.0.2/junit-platform-launcher-1.0.2.jar" />
+  </library>
+  <library name="Maven: org.junit.platform:junit-platform-surefire-provider:1.0.2">
+    <archive path="/home/mihai/.m2/repository/org/junit/platform/junit-platform-surefire-provider/1.0.2/junit-platform-surefire-provider-1.0.2.jar" />
+  </library>
+  <library name="Maven: org.opentest4j:opentest4j:1.0.0">
+    <archive path="/home/mihai/.m2/repository/org/opentest4j/opentest4j/1.0.0/opentest4j-1.0.0.jar" />
+  </library>
+  <library name="Maven: postgresql:postgresql:9.1-901.jdbc4">
+    <archive path="/home/mihai/.m2/repository/postgresql/postgresql/9.1-901.jdbc4/postgresql-9.1-901.jdbc4.jar" />
+  </library>
+  <library name="json-20171018" />
+</eclipse-userlibraries>
+
