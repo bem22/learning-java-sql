@@ -8,7 +8,7 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<AnchorPane maxHeight="580.0" maxWidth="1200.0" minHeight="-Infinity" minWidth="-Infinity" prefHeight="580.0" prefWidth="1200.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="_controller">
+<AnchorPane fx:id="create_tables" maxHeight="580.0" maxWidth="1200.0" minHeight="-Infinity" minWidth="-Infinity" prefHeight="580.0" prefWidth="1200.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="_controller">
    <children>
       <ScrollPane fx:id="main_display_scroll_pane" layoutX="97.0" layoutY="163.0" prefHeight="400.0" prefWidth="1080.0">
          <content>
@@ -29,5 +29,7 @@
       </Button>
       <ComboBox fx:id="table_combobox" layoutX="97.0" layoutY="130.0" prefWidth="150.0" promptText="Table" />
       <Button fx:id="queryTable" layoutX="253.0" layoutY="130.0" mnemonicParsing="false" onAction="#queryTable" text="Query!" />
+      <Button fx:id="create_tables" layoutX="1018.0" layoutY="18.0" mnemonicParsing="false" onAction="#createTables" text="Create Tables" />
+      <Button fx:id="drop_tables" layoutX="1018.0" layoutY="51.0" mnemonicParsing="false" onAction="#dropTables" prefHeight="25.0" prefWidth="109.0" text="Drop tables" />
    </children>
 </AnchorPane>

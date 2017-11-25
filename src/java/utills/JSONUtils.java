@@ -11,7 +11,7 @@ import java.sql.SQLException;
 
 public class JSONUtils {
 
-    static String getJSON(String url, OkHttpClient client){
+    public static String getJSON(String url, OkHttpClient client){
         String s = "";
         Request request = new Request.Builder().url(url).build();
         Response response = null;

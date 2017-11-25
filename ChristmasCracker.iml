@@ -17,6 +17,7 @@
     <orderEntry type="library" name="Maven: postgresql:postgresql:9.1-901.jdbc4" level="project" />
     <orderEntry type="library" name="Maven: com.squareup.okhttp3:okhttp:3.9.1" level="project" />
     <orderEntry type="library" name="Maven: com.squareup.okio:okio:1.13.0" level="project" />
+    <orderEntry type="library" name="Maven: org.json:json:20171018" level="project" />
     <orderEntry type="library" name="Maven: org.junit.platform:junit-platform-surefire-provider:1.0.2" level="project" />
     <orderEntry type="library" name="Maven: org.junit.platform:junit-platform-launcher:1.0.2" level="project" />
     <orderEntry type="library" name="Maven: org.junit.platform:junit-platform-engine:1.0.2" level="project" />

@@ -4,24 +4,24 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.scene.control.TableColumn;
 import javafx.util.Callback;
+import okhttp3.OkHttpClient;
+
+import org.json.JSONArray;
+import org.json.JSONObject;
 import utills.DBUtils;
-import utills.TableInformation;
 
 import java.sql.Connection;
 import java.sql.ResultSet;
-import java.sql.ResultSetMetaData;
-import java.util.Observable;
-
-import static com.sun.xml.internal.fastinfoset.alphabet.BuiltInRestrictedAlphabets.table;
 
 public class _model {
-
-    String url = "jdbc:postgresql://localhost:5432/mihai";
+    OkHttpClient client;
+    String url = "jdbc:postgresql://localhost:5432/christmas";
     String user = "mihai";
     String password = "password123";
     Connection connection;
     public _model(){
         try{
+            client = new OkHttpClient();
             this.connection= DBUtils.getConnectionPSQL(url, user, password);
         } catch (Exception e){
             e.printStackTrace();
@@ -71,7 +71,22 @@ public class _model {
             e.printStackTrace();
         }
 
+
         return data;
+    }
+
+    public void loadJokes(){
+        String s = utills.JSONUtils.getJSON("http://api.icndb.com/jokes/random/600", client);
+        String t = utills.JSONUtils.getJSON("https://qrng.anu.edu.au/API/jsonI.php?length=500&type=uint8", client);
+        JSONObject jokeJSON = new JSONObject(s);
+        JSONObject costJSON = new JSONObject(t);
+
+        JSONArray jokes = jokeJSON.getJSONArray("value");
+        JSONArray costs = costJSON.getJSONArray("data");
+        for(int i =0 ; i<400; i++){
+            System.out.println(costs.get(i) + " " + jokes.getJSONObject(i).get("id")+ ". "+ jokes.getJSONObject(i).get("joke"));
+        }
+
     }
 
 
