@@ -8,13 +8,17 @@ import okhttp3.OkHttpClient;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
-import utills.DBUtils;
+import utils.DBUtils;
 
 import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 
 public class _model {
     OkHttpClient client;
+    String jokesAPI = "http://api.icndb.com/jokes/random/600";
+    String numbersAPI = "https://qrng.anu.edu.au/API/jsonI.php?length=500&type=uint8" ;
+    String randomAPI = "https://randomapi.com/api/0z3zu0yn?key=LWDP-98HG-JI1N-WQY6&results=20";
     String url = "jdbc:postgresql://localhost:5432/christmas";
     String user = "mihai";
     String password = "password123";
@@ -75,19 +79,52 @@ public class _model {
         return data;
     }
 
-    public void loadJokes(){
-        String s = utills.JSONUtils.getJSON("http://api.icndb.com/jokes/random/600", client);
-        String t = utills.JSONUtils.getJSON("https://qrng.anu.edu.au/API/jsonI.php?length=500&type=uint8", client);
-        JSONObject jokeJSON = new JSONObject(s);
-        JSONObject costJSON = new JSONObject(t);
+    public void populateJokes(){
+        //Jokes
+        PreparedStatement psm;
+        String query = "INSERT INTO Jokes VALUES(?,?,?)";
+
+        String jokes_String = utils.JSONUtils.getJSON(jokesAPI, client);
+        String prices_String = utils.JSONUtils.getJSON(numbersAPI, client);
+        JSONObject jokeJSON = new JSONObject(jokes_String);
+        JSONObject costJSON = new JSONObject(prices_String);
 
         JSONArray jokes = jokeJSON.getJSONArray("value");
         JSONArray costs = costJSON.getJSONArray("data");
-        for(int i =0 ; i<400; i++){
-            System.out.println(costs.get(i) + " " + jokes.getJSONObject(i).get("id")+ ". "+ jokes.getJSONObject(i).get("joke"));
+
+        for(int i =0 ; i<500; i++){
+              try{
+                psm = connection.prepareStatement(query);
+                psm.setInt(1,jokes.getJSONObject(i).getInt("id"));
+                psm.setString(2, jokes.getJSONObject(i).getString("joke"));
+                psm.setInt(3, costs.getInt(i));
+                psm.execute();
+
+            }catch (Exception e){continue;}
         }
 
+
     }
+
+    public void populateGifts(){
+        PreparedStatement psm;
+        String query = "INSERT INTO Gifts VALUES(?,?,?)";
+        String api = utils.JSONUtils.getJSON(randomAPI, client);
+        JSONArray gifts;
+        for(int i=0; i<20; i++){
+            gifts = new JSONArray(new JSONObject(utils.JSONUtils.getJSON(randomAPI, client)).getJSONArray("result"));
+            for(int j=0; j<gifts.length(); j++){
+                System.out.println(gifts.getJSONObject(i).get("hid"));
+            }
+        }
+
+
+    }
+
+    public void populateHats(){
+
+    }
+
 
 
 }

@@ -31,5 +31,6 @@
       <Button fx:id="queryTable" layoutX="253.0" layoutY="130.0" mnemonicParsing="false" onAction="#queryTable" text="Query!" />
       <Button fx:id="create_tables" layoutX="1018.0" layoutY="18.0" mnemonicParsing="false" onAction="#createTables" text="Create Tables" />
       <Button fx:id="drop_tables" layoutX="1018.0" layoutY="51.0" mnemonicParsing="false" onAction="#dropTables" prefHeight="25.0" prefWidth="109.0" text="Drop tables" />
+      <Button fx:id="populate" layoutX="1018.0" layoutY="95.0" mnemonicParsing="false" onAction="#populate" text="populate" />
    </children>
 </AnchorPane>

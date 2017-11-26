@@ -1,8 +1,6 @@
-package utills;
+package utils;
 import javafx.collections.ObservableList;
 import javafx.scene.control.TableColumn;
-
-import java.util.Observable;
 
 public class TableInformation {
     private ObservableList data;

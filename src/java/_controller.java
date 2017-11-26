@@ -4,7 +4,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
 import javafx.stage.Stage;
-import utills.DBUtils;
+import utils.DBUtils;
 import java.net.URL;
 import java.sql.Connection;
 import java.sql.SQLException;
@@ -114,6 +114,11 @@ public class _controller implements Initializable{
         } catch (SQLException e) {
             e.printStackTrace();
         }
+    }
+
+    @FXML
+    public void populate(){
+        m.populateJokes();
     }
 
 }
