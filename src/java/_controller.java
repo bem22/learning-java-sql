@@ -39,7 +39,9 @@ public class _controller implements Initializable{
 
     public void initialize(URL location, ResourceBundle resources) {
         ArrayList<String> s = DBUtils.getTableNames(c);
+
         this.table_combobox.setItems(FXCollections.observableArrayList(s));
+        table_combobox.getSelectionModel().selectFirst();
 
     }
     @FXML
@@ -53,6 +55,7 @@ public class _controller implements Initializable{
         table.getColumns().clear();
         table.getColumns().addAll(m.getColumns(table_combobox.getValue()));
         table.setItems(m.getData((table_combobox.getValue())));
+
     }
     @FXML void dropTables(){
         String query1="DROP TABLE Crackers",
@@ -117,8 +120,20 @@ public class _controller implements Initializable{
     }
 
     @FXML
-    public void populate(){
-        m.populateJokes();
+    public void populateH(){
+        m.populateHats();
+    }
+
+
+    @FXML
+    public void populateG(){
+        m.populateHats();
+    }
+
+
+    @FXML
+    public void populateJ(){
+        m.populateHats();
     }
 
 }

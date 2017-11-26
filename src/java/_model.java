@@ -19,6 +19,7 @@ public class _model {
     String jokesAPI = "http://api.icndb.com/jokes/random/600";
     String numbersAPI = "https://qrng.anu.edu.au/API/jsonI.php?length=500&type=uint8" ;
     String randomAPI = "https://randomapi.com/api/0z3zu0yn?key=LWDP-98HG-JI1N-WQY6&results=20";
+    String descriptionAPI = "https://baconipsum.com/api/?type=all-meat&sentences=1&start-with-lorem=1";
     String url = "jdbc:postgresql://localhost:5432/christmas";
     String user = "mihai";
     String password = "password123";
@@ -59,24 +60,25 @@ public class _model {
     }
 
     public ObservableList<ObservableList> getData(String table){
-        ObservableList <ObservableList> data = FXCollections.observableArrayList();
-        try{
+        ObservableList<ObservableList> data = FXCollections.observableArrayList();
+        try {
             String query = "SELECT * FROM " + table;
             ResultSet rs = connection.createStatement().executeQuery(query);
-            while(rs.next()){
+            while (rs.next()) {
                 ObservableList<String> row = FXCollections.observableArrayList();
-                for(int i = 1; i<=rs.getMetaData().getColumnCount(); i++){
+                for (int i = 1; i <= rs.getMetaData().getColumnCount(); i++) {
                     row.add(rs.getString(i));
                 }
                 data.add(row);
             }
 
-        }catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
+
         }
 
-
         return data;
+
     }
 
     public void populateJokes(){
@@ -100,30 +102,67 @@ public class _model {
                 psm.setInt(3, costs.getInt(i));
                 psm.execute();
 
-            }catch (Exception e){continue;}
-        }
-
-
-    }
-
-    public void populateGifts(){
-        PreparedStatement psm;
-        String query = "INSERT INTO Gifts VALUES(?,?,?)";
-        String api = utils.JSONUtils.getJSON(randomAPI, client);
-        JSONArray gifts;
-        for(int i=0; i<20; i++){
-            gifts = new JSONArray(new JSONObject(utils.JSONUtils.getJSON(randomAPI, client)).getJSONArray("result"));
-            for(int j=0; j<gifts.length(); j++){
-                System.out.println(gifts.getJSONObject(i).get("hid"));
-            }
+            }catch (Exception e){e.printStackTrace();continue;}
         }
 
 
     }
 
     public void populateHats(){
+        PreparedStatement psm;
+        String query = "INSERT INTO Hats VALUES(?,?,?)";
 
+        String gifts_String= utils.JSONUtils.getJSON(randomAPI, client);
+        JSONObject giftsJSON = new JSONObject(gifts_String);
+        JSONArray gifts = giftsJSON.getJSONArray("results");
+        for(int j=0; j<gifts.length(); j++){
+            System.out.println(gifts.getJSONObject(j).get("hid") + " "
+                    + gifts.getJSONObject(j).get("hdescription") + " "
+                    + gifts.getJSONObject(j).get("hprice"));
+            try{
+                psm = connection.prepareStatement(query);
+                psm.setInt(1,gifts.getJSONObject(j).getInt("hid"));
+
+                psm.setString(2, (gifts.getJSONObject(j).getString("hdescription")));
+
+                psm.setInt(3,gifts.getJSONObject(j).getInt("hprice"));
+                psm.execute();
+            }catch (Exception e){e.printStackTrace();continue;}
+        }
     }
+
+    public void populateGifts(){
+        /*
+        PreparedStatement psm;
+        String query = "INSERT INTO Gifts VALUES(?,?,?)";
+
+        String gifts_String= utils.JSONUtils.getJSON(randomAPI, client);
+        JSONObject giftsJSON = new JSONObject(gifts_String);
+        JSONArray gifts = giftsJSON.getJSONArray("results");
+        for(int j=0; j<gifts.length(); j++){
+            System.out.println(gifts.getJSONObject(j).get("gid") + " "
+                    + gifts.getJSONObject(j).get("gdescription") + " "
+                    + gifts.getJSONObject(j).get("gprice"));
+            try{
+                psm = connection.prepareStatement(query);
+                psm.setInt(1,gifts.getJSONObject(j).getInt("gid"));
+
+                psm.setString(2, (gifts.getJSONObject(j).getString("gdescription")));
+
+                psm.setInt(3,gifts.getJSONObject(j).getInt("gprice"));
+                psm.execute();
+            }catch (Exception e){e.printStackTrace();continue;}
+        }
+
+
+
+         */
+    }
+
+
+
+
+
 
 
 
