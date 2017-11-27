@@ -47,7 +47,7 @@ CREATE TABLE Crackers(
 
 |INTEGER|VARCHAR|INT|
 |-------------------|
-|jid|joke|royality|
+|jid|joke|royalty|
 
 Constraints:
 * _JID_ primary key
@@ -65,7 +65,7 @@ Constraints:
 CREATE TABLE Jokes(
   jid INTEGER,
   joke VARCHAR NOT NULL,
-  royality INTEGER NOT NULL,
+  royalty INTEGER NOT NULL,
   CONSTRAINT Joke_Primary PRIMARY KEY(jid),
   CONSTRAINT Joke_Joke_Unique UNIQUE (joke)
 )

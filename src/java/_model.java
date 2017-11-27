@@ -40,7 +40,6 @@ public class _model {
         }
     }
 
-
     public boolean isConnected(){
         return this.connection !=null;
     }
@@ -54,7 +53,6 @@ public class _model {
 
             ResultSet rs = psm.executeQuery();
             rs.next();
-            System.out.println(rs.getInt("COUNT"));
             return rs.getInt(1);
         } catch (SQLException e) {
             e.printStackTrace();
@@ -108,8 +106,6 @@ public class _model {
 
     }
 
-
-
     public ObservableList<ObservableList> getData(String table, String object){
         ObservableList<ObservableList> data = FXCollections.observableArrayList();
         String columnName;
@@ -139,7 +135,6 @@ public class _model {
 
     }
 
-
     public void populateJokes(){
         //Jokes
         PreparedStatement psm;
@@ -147,7 +142,7 @@ public class _model {
 
         String jokes_String = utils.JSONUtils.getJSON(jokeAPI, client);
         JSONObject jokeJSON = new JSONObject(jokes_String);
-        System.out.println("Hello");
+
         JSONArray jokes = jokeJSON.getJSONArray("value");
         Random rnd = new Random();
 
@@ -179,7 +174,6 @@ public class _model {
                 queryGift + ", " +
                 "?)";
 
-        System.out.println(query);
 
         String cracker_String = utils.JSONUtils.getJSON(crackerAPI, client);
         JSONObject crackerJSON = new JSONObject(cracker_String);
@@ -197,12 +191,6 @@ public class _model {
 
                 psm.execute();
 
-                System.out.println(crackers.getJSONObject(j).get("cid") + " "
-                        + crackers.getJSONObject(j).get("cname") + " "
-                        + crackers.getJSONObject(j).get("cquantity") + " "
-                        + crackers.getJSONObject(j).get("rjoke") + " "
-                        + crackers.getJSONObject(j).get("rhat") + " "
-                        + crackers.getJSONObject(j).get("rgift"));
 
 
             }catch (Exception e){
@@ -219,9 +207,7 @@ public class _model {
         JSONObject giftsJSON = new JSONObject(gifts_String);
         JSONArray gifts = giftsJSON.getJSONArray("results");
         for(int j=0; j<gifts.length(); j++){
-            System.out.println(gifts.getJSONObject(j).get("hid") + " "
-                    + gifts.getJSONObject(j).get("hdescription") + " "
-                    + gifts.getJSONObject(j).get("hprice"));
+
             try{
                 psm = connection.prepareStatement(query);
                 psm.setInt(1,gifts.getJSONObject(j).getInt("hid"));
@@ -243,9 +229,6 @@ public class _model {
         JSONObject giftsJSON = new JSONObject(gifts_String);
         JSONArray gifts = giftsJSON.getJSONArray("results");
         for(int j=0; j<gifts.length(); j++){
-            System.out.println(gifts.getJSONObject(j).get("gid") + " "
-                    + gifts.getJSONObject(j).get("gdescription") + " "
-                    + gifts.getJSONObject(j).get("gprice"));
             try{
                 psm = connection.prepareStatement(query);
                 psm.setInt(1,gifts.getJSONObject(j).getInt("gid"));
@@ -262,7 +245,7 @@ public class _model {
         String createJokesQuery ="CREATE TABLE Jokes(" +
                 "  jid INTEGER," +
                 "  joke VARCHAR NOT NULL," +
-                "  royality INTEGER NOT NULL," +
+                "  royalty INTEGER NOT NULL," +
                 "  CONSTRAINT Joke_Primary PRIMARY KEY (jid)," +
                 "  CONSTRAINT Joke_Joke_Unique UNIQUE (joke)" +
                 ")";
@@ -293,7 +276,6 @@ public class _model {
                 "  CONSTRAINT Hat_Foreign FOREIGN KEY (hid) REFERENCES Hats(hid), " +
                 "  CONSTRAINT Gift_Foreign FOREIGN KEY (gid) REFERENCES Gifts(gid)" +
                 ")";
-        System.out.println(createCrackersQuery);
 
         try {
             connection.prepareStatement(createJokesQuery).execute();
@@ -332,8 +314,57 @@ public class _model {
             e.printStackTrace();
         }
     }
-
-
+    public void addCracker(int cid, String name, int jid, int hid, int gid, int quantity){
+        String query = "INSERT INTO Crackers(cid, name, jid, hid, gid, quantity) VALUES(?,?,?,?,?,?)";
+        try {
+            PreparedStatement psm = connection.prepareStatement(query);
+            psm.setInt(1, cid);
+            psm.setString(2, name);
+            psm.setInt(3, jid);
+            psm.setInt(4, hid);
+            psm.setInt(5, gid);
+            psm.setInt(6, quantity);
+            psm.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+    public void addHat(int hid, String description, int price){
+        String query = "INSERT INTO Hats(hid, description, price) VALUES(?,?,?)";
+        try{
+            PreparedStatement psm = connection.prepareStatement(query);
+            psm.setInt(1,hid);
+            psm.setString(2, description);
+            psm.setInt(3, price);
+            psm.executeUpdate();
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+    }
+    public void addJoke(int jid, String joke, int royalty){
+        String query = "INSERT INTO Jokes(jid, joke, royalty) VALUES(?,?,?)";
+        try{
+            PreparedStatement psm = connection.prepareStatement(query);
+            psm.setInt(1,jid);
+            psm.setString(2, joke);
+            psm.setInt(3, royalty);
+            psm.executeUpdate();
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+    }
+    public void addGift(int gid, String description, int price){
+        String query = "INSERT INTO Gifts(gid, description, price) VALUES(?,?,?)";
+        try{
+            PreparedStatement psm = connection.prepareStatement(query);
+            psm.setInt(1,gid);
+            psm.setString(2, description);
+            psm.setInt(3, price);
+            psm.executeUpdate();
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+    }
 
 
 
