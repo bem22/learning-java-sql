@@ -1,9 +1,9 @@
 ### Christmas Crackers
 ### Cracker  
 
-|INTEGER|VARCHAR|INT|INT|INT|INT|INT|
+|INTEGER|VARCHAR|INT|INT|INT|INT|
 |-----------------------------------|
-|cid|name|jid|gid|hid|saleprice|quantity|
+|cid|name|jid|hid|gid|quantity|
 
 Constraints:
 * _CID_ primary key
@@ -16,15 +16,15 @@ Constraints:
 ```
 * _JID_ foreign key
 ```sql
-    CONSTRAINT Joke_Foreign FOREIGN KEY (jid) REFERENCES Jokes(jid)
+    CONSTRAINT Joke_Foreign FOREIGN KEY (jid) REFERENCES Jokes(jid) ON DELETE CASCADE
 ```
 * _HID_ foreign key
 ```sql
-    CONSTRAINT Hat_Foreign FOREIGN KEY (hid) REFERENCES Hats(hid)
+    CONSTRAINT Hat_Foreign FOREIGN KEY (hid) REFERENCES Hats(hid) ON DELETE CASCADE
 ```
 * _GID_ foreign key
 ```sql
-    CONSTRAINT Gift_Foreign FOREIGN KEY (gid) REFERENCES Gifts(gid)
+    CONSTRAINT Gift_Foreign FOREIGN KEY (gid) REFERENCES Gifts(gid) ON DELETE CASCADE
 ```
 
 ##### CODE
@@ -32,14 +32,15 @@ Constraints:
 CREATE TABLE Crackers(
   cid INTEGER,
   name VARCHAR NOT NULL,
-  jid INTEGER,
-  hid INTEGER,
-  gid INTEGER,
+  jid INTEGER NOT NULL,
+  hid INTEGER NOT NULL,
+  gid INTEGER NOT NULL,
+  quantity INTEGER NOT NULL,
   CONSTRAINT Cracker_Primary PRIMARY KEY (cid),
   CONSTRAINT Cracker_Name_Unique UNIQUE(name),
-  CONSTRAINT Joke_Foreign FOREIGN KEY (jid) REFERENCES Jokes(jid),
-  CONSTRAINT Hat_Foreign FOREIGN KEY (hid) REFERENCES Hats(hid),
-  CONSTRAINT Gift_Foreign FOREIGN KEY (gid) REFERENCES Gifts(gid)
+  CONSTRAINT Joke_Foreign FOREIGN KEY (jid) REFERENCES Jokes(jid) ON DELETE CASCADE,
+  CONSTRAINT Hat_Foreign FOREIGN KEY (hid) REFERENCES Hats(hid) ON DELETE CASCADE,
+  CONSTRAINT Gift_Foreign FOREIGN KEY (gid) REFERENCES Gifts(gid) ON DELETE CASCADE
 )
 ```
 #### Jokes
@@ -51,7 +52,7 @@ CREATE TABLE Crackers(
 Constraints:
 * _JID_ primary key
 ```sql
-    CONSTRAINT Joke_Primary PRIMARY KEY (jid)
+    CONSTRAINT Joke_Primary PRIMARY KEY(jid)
 
 ```
 * _joke_ unique
@@ -65,7 +66,7 @@ CREATE TABLE Jokes(
   jid INTEGER,
   joke VARCHAR NOT NULL,
   royality INTEGER NOT NULL,
-  CONSTRAINT Joke_Primary PRIMARY KEY (jid),
+  CONSTRAINT Joke_Primary PRIMARY KEY(jid),
   CONSTRAINT Joke_Joke_Unique UNIQUE (joke)
 )
 ```
@@ -78,7 +79,7 @@ CREATE TABLE Jokes(
 Constraints:
 * _HID_ primary key
 ```sql
-    CONSTRAINT Hat_Primary PRIMARY KEY (hid)
+    CONSTRAINT Hat_Primary PRIMARY KEY(hid)
 ```
 ##### Code
 ```sql
@@ -86,7 +87,7 @@ CREATE TABLE Hats(
   hid INTEGER,
   description VARCHAR NOT NULL,
   price INTEGER NOT NULL,
-  CONSTRAINT Hat_Primary PRIMARY KEY (hid)
+  CONSTRAINT Hat_Primary PRIMARY KEY(hid)
 )
 
 ```
@@ -98,7 +99,7 @@ CREATE TABLE Hats(
 
 Constraints:
 * _GID_ primary key
-```sqlft
+```sql
     CONSTRAINT Gift_Primary PRIMARY KEY (gid)
 ```
 ##### Code
@@ -107,7 +108,7 @@ CREATE TABLE Gifts(
   gid INTEGER,
   description VARCHAR NOT NULL,
   price INTEGER NOT NULL,
-  CONSTRAINT Gi_Primary PRIMARY KEY (gid)
+  CONSTRAINT Gi_Primary PRIMARY KEY(gid)
 )
 
 ```

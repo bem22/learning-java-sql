@@ -3,13 +3,20 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
+import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import utils.DBUtils;
 import java.net.URL;
 import java.sql.Connection;
-import java.sql.SQLException;
+import org.apache.commons.lang3.math.NumberUtils;
+
+import javax.swing.*;
 import java.util.ArrayList;
+import java.util.Observable;
 import java.util.ResourceBundle;
+import java.util.Scanner;
+
+import static org.apache.commons.lang3.math.NumberUtils.isDigits;
 
 public class _controller implements Initializable{
 
@@ -18,122 +25,101 @@ public class _controller implements Initializable{
 
 
     @FXML
-    private Button closeWindow_button;
+    private Button closeWindowButton;
+
+    @FXML
+    private Text numberOfEntries;
 
     @FXML
     private Button queryTable;
 
     @FXML
-    private Button create_Tables;
+    private TextField searchBox;
+
 
     @FXML
-    private Button drop_tables;
+    private Button populate;
 
     @FXML
-    private ComboBox<String> table_combobox;
+    private Button addValue;
+
+    @FXML
+    private Button removeValue;
+
+    @FXML
+    private Button getReport;
+
+    @FXML
+    private ComboBox<String> tableCombobox;
 
     @FXML
     private TableView table;
 
 
-
     public void initialize(URL location, ResourceBundle resources) {
         ArrayList<String> s = DBUtils.getTableNames(c);
-
-        this.table_combobox.setItems(FXCollections.observableArrayList(s));
-        table_combobox.getSelectionModel().selectFirst();
-
+        this.tableCombobox.setItems(FXCollections.observableArrayList(s));
     }
     @FXML
     public void closeWindow(ActionEvent close){
-        Stage stage = (Stage) closeWindow_button.getScene().getWindow();
+        Stage stage = (Stage) closeWindowButton.getScene().getWindow();
         stage.close();
     }
 
-    @FXML
-    public void queryTable(ActionEvent query){
-        table.getColumns().clear();
-        table.getColumns().addAll(m.getColumns(table_combobox.getValue()));
-        table.setItems(m.getData((table_combobox.getValue())));
 
+    public void setEntriesNumber(){
+        numberOfEntries.setText(String.valueOf(m.count(tableCombobox.getValue()) + " Entries"));
     }
-    @FXML void dropTables(){
-        String query1="DROP TABLE Crackers",
-               query2 = "DROP TABLE Hats",
-               query3="DROP TABLE Gifts",
-               query4="DROP TABLE Jokes";
-        try{
-            m.connection.prepareStatement(query1).execute();
-            m.connection.prepareStatement(query2).execute();
-            m.connection.prepareStatement(query4).execute();
-            m.connection.prepareStatement(query3).execute();
 
-        }catch (Exception e){
-            e.printStackTrace();
+    @FXML
+    public void searchTable(){
+        if(tableCombobox.getValue()!=null&&tableCombobox.getValue()!=""){
+            if(!searchBox.getText().trim().equals("")){
+                table.getColumns().clear();
+                table.getColumns().addAll(m.getColumns(tableCombobox.getValue()));
+                table.setItems(m.getData(tableCombobox.getValue(), searchBox.getText()));
+                setEntriesNumber();
+            }
+            else {
+                table.getColumns().clear();
+                table.getColumns().addAll(m.getColumns(tableCombobox.getValue()));
+                table.setItems(m.getData((tableCombobox.getValue())));
+                setEntriesNumber();
+            }
         }
     }
 
     @FXML
-    public void createTables(){
-        String query1 ="CREATE TABLE Jokes(" +
-                "  jid INTEGER," +
-                "  joke VARCHAR NOT NULL," +
-                "  royality INTEGER NOT NULL," +
-                "  CONSTRAINT Joke_Primary PRIMARY KEY (jid)," +
-                "  CONSTRAINT Joke_Joke_Unique UNIQUE (joke)" +
-                ")";
-        String query2="CREATE TABLE Hats(" +
-                "  hid INTEGER," +
-                "  description VARCHAR NOT NULL," +
-                "  price INTEGER NOT NULL," +
-                "  CONSTRAINT Hat_Primary PRIMARY KEY (hid)" +
-                ")";
-        String query3="CREATE TABLE Gifts(" +
-                "  gid INTEGER," +
-                "  description VARCHAR NOT NULL," +
-                "  price INTEGER NOT NULL," +
-                "  CONSTRAINT Gi_Primary PRIMARY KEY (gid)" +
-                ")";
+    public void addValue(){
+
+    }
+
+    public int getId(){
+        String s = ""+table.getSelectionModel().getSelectedItem();
+        return Integer.valueOf(s.substring(1,s.indexOf(' ')-1));
+
+    }
+    @FXML
+    public void removeValue(ActionEvent e){
+        m.removeId(tableCombobox.getValue(), getId());
+        searchTable();
+        setEntriesNumber();
 
 
-        String query4 = "CREATE TABLE Crackers(" +
-                "  cid INTEGER," +
-                "  name VARCHAR NOT NULL," +
-                "  jid INTEGER," +
-                "  hid INTEGER," +
-                "  gid INTEGER," +
-                "  CONSTRAINT Cracker_Primary PRIMARY KEY (cid)," +
-                "  CONSTRAINT Cracker_Name_Unique UNIQUE(name)," +
-                "  CONSTRAINT Joke_Foreign FOREIGN KEY (jid) REFERENCES Jokes(jid)," +
-                "  CONSTRAINT Hat_Foreign FOREIGN KEY (hid) REFERENCES Hats(hid)," +
-                "  CONSTRAINT Gift_Foreign FOREIGN KEY (gid) REFERENCES Gifts(gid)" +
-                ")";
-
-        try {
-            m.connection.prepareStatement(query1).execute();
-            m.connection.prepareStatement(query2).execute();
-            m.connection.prepareStatement(query3).execute();
-            m.connection.prepareStatement(query4).execute();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
     }
 
     @FXML
-    public void populateH(){
-        m.populateHats();
+    public void getReport(ActionEvent e){
+
     }
+
 
 
     @FXML
     public void populateG(){
-        m.populateHats();
+        m.populateCrackers();
     }
 
 
-    @FXML
-    public void populateJ(){
-        m.populateHats();
-    }
 
 }
