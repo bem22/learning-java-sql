@@ -31,6 +31,8 @@ public class _controller implements Initializable{
     private Text numberOfEntries;
 
     @FXML
+    private Text reportText;
+    @FXML
     private Button queryTable;
 
     @FXML
@@ -93,7 +95,6 @@ public class _controller implements Initializable{
     public void addValue(){
 
     }
-
     public int getId(){
         String s = ""+table.getSelectionModel().getSelectedItem();
         return Integer.valueOf(s.substring(1,s.indexOf(' ')-1));
@@ -104,15 +105,22 @@ public class _controller implements Initializable{
         m.removeId(tableCombobox.getValue(), getId());
         searchTable();
         setEntriesNumber();
-
-
     }
 
     @FXML
     public void getReport(ActionEvent e){
+        int cjid = m.getCrackerJID(getId());
+        int chid = m.getCrackerHID(getId());
+        int cgid = m.getCrackerGID(getId());
 
+        reportText.setText(
+                "This cracker has:" + '\n' +
+                        "Joke = " + m.getJokeString(cjid) + '\n' +
+                        "Hat = " + m.getHatDescription(chid) + '\n' +
+                        "Gift = " + m.getGiftDescription(cgid) + '\n' +
+                        "and a price of... " + (m.getGiftPrice(cgid)+m.getHatPrice(chid)+m.getJokeRoyalty(cjid))
+        );
     }
-
 
 
     @FXML

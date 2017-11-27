@@ -366,6 +366,156 @@ public class _model {
         }
     }
 
+    public String getJokeString(int id){
+        String query = "SELECT joke FROM Jokes where jid = ?";
+        try {
+            PreparedStatement psm = connection.prepareStatement(query);
+            psm.setInt(1, id);
+            ResultSet rs = psm.executeQuery();
+            rs.next();
+            return rs.getString("joke");
+        } catch (SQLException e) {
+            e.printStackTrace();
+            System.out.println("1");
+        }
+        return "";
+    }
+
+    public int getJokeRoyalty(int id){
+        String query = "SELECT royalty FROM Jokes where jid = ?";
+        try {
+            PreparedStatement psm = connection.prepareStatement(query);
+            psm.setInt(1, id);
+            ResultSet rs = psm.executeQuery();
+            rs.next();
+            return rs.getInt("royalty");
+        } catch (SQLException e) {
+            e.printStackTrace();
+            System.out.println("2");
+        }
+        return 0;
+    }
+
+    public String getGiftDescription(int id){
+        String query = "SELECT description FROM Gifts where gid = ?";
+        try {
+            PreparedStatement psm = connection.prepareStatement(query);
+            psm.setInt(1, id);
+            ResultSet rs = psm.executeQuery();
+            rs.next();
+            return rs.getString("description");
+        } catch (SQLException e) {
+            e.printStackTrace();
+            System.out.println("3");
+        }
+        return "";
+    }
+
+    public String getHatDescription(int id){
+        String query = "SELECT description FROM Hats where hid = ?";
+        try {
+            PreparedStatement psm = connection.prepareStatement(query);
+            psm.setInt(1, id);
+            ResultSet rs = psm.executeQuery();
+            rs.next();
+            return rs.getString("description");
+        } catch (SQLException e) {
+            e.printStackTrace();
+
+            System.out.println("4");
+        }
+        return "";
+    }
+
+    public int getGiftPrice(int id){
+        String query = "SELECT price FROM Gifts where gid = ?";
+        try {
+            PreparedStatement psm = connection.prepareStatement(query);
+            psm.setInt(1, id);
+            ResultSet rs = psm.executeQuery();
+            rs.next();
+            return rs.getInt("price");
+        } catch (SQLException e) {
+            e.printStackTrace();
+            System.out.println("5");
+        }
+        return 0;
+
+    }
+
+    public int getHatPrice(int id){
+        String query = "SELECT price FROM Hats where hid = ?";
+        try {
+            PreparedStatement psm = connection.prepareStatement(query);
+            psm.setInt(1, id);
+            ResultSet rs = psm.executeQuery();
+            rs.next();
+            return rs.getInt("price");
+        } catch (SQLException e) {
+            e.printStackTrace();
+            System.out.println("6");
+        }
+        return 0;
+    }
+
+    public int getCrackerHID(int cid){
+        String query = "SELECT hid FROM Crackers where cid = ?";
+        try {
+            PreparedStatement psm = connection.prepareStatement(query);
+            psm.setInt(1, cid);
+            ResultSet rs = psm.executeQuery();
+            rs.next();
+            return rs.getInt("hid");
+        } catch (SQLException e) {
+            e.printStackTrace();
+            System.out.println("7");
+        }
+        return 0;
+    }
+
+    public int getCrackerJID(int cid){
+
+        String query = "SELECT jid FROM Crackers where cid = ?";
+        try {
+            PreparedStatement psm = connection.prepareStatement(query);
+            psm.setInt(1, cid);
+            ResultSet rs = psm.executeQuery();
+            rs.next();
+            return rs.getInt("jid");
+        } catch (SQLException e) {
+            e.printStackTrace();
+
+            System.out.println("8");
+        }
+        return 0;
+
+    }
+
+    public int getCrackerGID(int cid){
+
+        String query = "SELECT gid FROM Crackers where cid = ?";
+        try {
+            PreparedStatement psm = connection.prepareStatement(query);
+            psm.setInt(1, cid);
+            ResultSet rs = psm.executeQuery();
+            rs.next();
+            return rs.getInt("gid");
+        } catch (SQLException e) {
+            e.printStackTrace();
+
+            System.out.println("9");
+        }
+        return 0;
+    }
+
+
+
+
+
+
+
+
+
 
 
 
