@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<AnchorPane fx:id="addPopUp" prefHeight="280.0" prefWidth="400.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="_add_controller">
+   <children>
+      <Button fx:id="closeAddButton" layoutX="349.0" layoutY="22.0" mnemonicParsing="false" onAction="#closeAddPane" text="x" />
+   </children>
+</AnchorPane>

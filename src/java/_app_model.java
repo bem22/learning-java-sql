@@ -19,19 +19,22 @@ import java.util.Random;
 
 import static org.apache.commons.lang3.math.NumberUtils.isDigits;
 
-public class _model {
+public class _app_model {
     OkHttpClient client;
     String giftAPI = "https://randomapi.com/api/0z3zu0yn?key=LWDP-98HG-JI1N-WQY6&results=20";
     String hatAPI = "https://randomapi.com/api/b5xkyv97?key=8F47-34PG-ZO78-E8XG&results=20";
     String crackerAPI = "https://randomapi.com/api/cmyz100t?key=R7MX-PY30-DETX-1IKW&results=20";
     String jokeAPI = "http://api.icndb.com/jokes/random/600";
     String numberAPI = "https://randomapi.com/api/0z3zu0yn?key=LWDP-98HG-JI1N-WQY6" ;
-    String url = "jdbc:postgresql://mod-intro-databases.cs.bham.ac.uk/meb648";
-    String user = "meb648";
-    String password = "Asd123asd";
+    String url1 = "jdbc:postgresql://mod-intro-databases.cs.bham.ac.uk/meb648";
+    String url = "jdbc:postgresql://localhost/christmas";
+    String user1 = "meb648";
+    String user = "mihai";
+    String password1 = "Asd123asd";
+    String password = "password123";
     Connection connection;
 
-    public _model(){
+    public _app_model(){
         try{
             client = new OkHttpClient();
             this.connection= DBUtils.getConnectionPSQL(url, user, password);
@@ -272,9 +275,9 @@ public class _model {
                 "  quantity INTEGER NOT NULL," +
                 "  CONSTRAINT Cracker_Primary PRIMARY KEY (cid)," +
                 "  CONSTRAINT Cracker_Name_Unique UNIQUE(name)," +
-                "  CONSTRAINT Joke_Foreign FOREIGN KEY (jid) REFERENCES Jokes(jid)," +
-                "  CONSTRAINT Hat_Foreign FOREIGN KEY (hid) REFERENCES Hats(hid), " +
-                "  CONSTRAINT Gift_Foreign FOREIGN KEY (gid) REFERENCES Gifts(gid)" +
+                "  CONSTRAINT Joke_Foreign FOREIGN KEY (jid) REFERENCES Jokes(jid) ON DELETE CASCADE," +
+                "  CONSTRAINT Hat_Foreign FOREIGN KEY (hid) REFERENCES Hats(hid) ON DELETE CASCADE, " +
+                "  CONSTRAINT Gift_Foreign FOREIGN KEY (gid) REFERENCES Gifts(gid) ON DELETE CASCADE" +
                 ")";
 
         try {

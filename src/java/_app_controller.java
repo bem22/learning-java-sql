@@ -1,27 +1,29 @@
 import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.scene.layout.Pane;
 import javafx.scene.text.Text;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
+import javafx.stage.StageStyle;
 import utils.DBUtils;
+
+import java.io.IOException;
 import java.net.URL;
 import java.sql.Connection;
-import org.apache.commons.lang3.math.NumberUtils;
 
-import javax.swing.*;
 import java.util.ArrayList;
-import java.util.Observable;
 import java.util.ResourceBundle;
-import java.util.Scanner;
 
-import static org.apache.commons.lang3.math.NumberUtils.isDigits;
+public class _app_controller implements Initializable{
 
-public class _controller implements Initializable{
-
-    _model m = new _model();
+    _app_model m = new _app_model();
     Connection c = m.connection;
+    public  static boolean addWindow_isOpen = false;
 
 
     @FXML
@@ -73,6 +75,10 @@ public class _controller implements Initializable{
         numberOfEntries.setText(String.valueOf(m.count(tableCombobox.getValue()) + " Entries"));
     }
 
+    public static void setAdd_Closed(){
+        addWindow_isOpen = false;
+    }
+
     @FXML
     public void searchTable(){
         if(tableCombobox.getValue()!=null&&tableCombobox.getValue()!=""){
@@ -93,6 +99,22 @@ public class _controller implements Initializable{
 
     @FXML
     public void addValue(){
+        if (!addWindow_isOpen) {
+            try {
+                Stage addPopUP = new Stage();
+                FXMLLoader loader = new FXMLLoader();
+                Pane root = (Pane) loader.load(getClass().getResource("addPopUp.fxml").openStream());
+                Scene scene = new Scene(root);
+                addPopUP.setScene(scene);
+                addPopUP.initModality(Modality.APPLICATION_MODAL);
+                addPopUP.initStyle(StageStyle.UNDECORATED);
+                addPopUP.show();
+                addPopUP.setAlwaysOnTop(true);
+                addWindow_isOpen = true;
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
 
     }
     public int getId(){
