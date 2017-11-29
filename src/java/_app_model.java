@@ -29,7 +29,7 @@ public class _app_model {
     String url = "jdbc:postgresql://localhost/christmas";
     String user1 = "meb648";
     String user = "mihai";
-    String password2 = "Asd123asd";
+    String password1 = "Asd123asd";
     String password = "password123";
     Connection connection;
 

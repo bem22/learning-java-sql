@@ -302,44 +302,60 @@
     <!-- Perform any build initialization in this target -->
   </target>
   
-  <target name="clean" depends="clean.module.christmascracker" description="cleanup all"/>
+  <target name="clean" depends="clean.module.christmascracker, clean.artifact.christmascracker" description="cleanup all"/>
   
   <target name="build.modules" depends="init, clean, compile.module.christmascracker" description="build all modules"/>
   
   <target name="init.artifacts">
     <property name="artifacts.temp.dir" value="${basedir}/__artifacts_temp"/>
-    <property name="artifact.output.christmascracker:jar" value="${basedir}/out/artifacts/ChristmasCracker_jar"/>
+    <property name="artifact.output.christmascracker" value="${basedir}/out/artifacts/ChristmasCracker"/>
     <mkdir dir="${artifacts.temp.dir}"/>
-    <property name="temp.jar.path.ChristmasCracker.jar" value="${artifacts.temp.dir}/ChristmasCracker.jar"/>
+    <property name="artifact.temp.output.ChristmasCracker" value="${artifacts.temp.dir}/ChristmasCracker.jar"/>
+    <taskdef resource="com/sun/javafx/tools/ant/antlib.xml" uri="javafx:com.sun.javafx.tools.ant" classpath="${jdk.home.1.8}/lib/ant-javafx.jar"/>
   </target>
   
-  <target name="artifact.christmascracker:jar" depends="init.artifacts, compile.module.christmascracker" description="Build &#39;ChristmasCracker:jar&#39; artifact">
-    <property name="artifact.temp.output.christmascracker:jar" value="${artifacts.temp.dir}/ChristmasCracker_jar"/>
-    <mkdir dir="${artifact.temp.output.christmascracker:jar}"/>
-    <jar destfile="${temp.jar.path.ChristmasCracker.jar}" duplicate="preserve" filesetmanifest="mergewithoutmain">
-      <zipfileset dir="${christmascracker.output.dir}"/>
-      <zipfileset src="${path.variable.maven_repository}/org/junit/jupiter/junit-jupiter-api/5.1.0-M1/junit-jupiter-api-5.1.0-M1.jar"/>
-      <zipfileset src="${path.variable.maven_repository}/com/squareup/okio/okio/1.13.0/okio-1.13.0.jar"/>
-      <zipfileset src="${path.variable.maven_repository}/org/junit/platform/junit-platform-surefire-provider/1.0.2/junit-platform-surefire-provider-1.0.2.jar"/>
-      <zipfileset src="${path.variable.maven_repository}/com/squareup/okhttp3/okhttp/3.9.1/okhttp-3.9.1.jar"/>
-      <zipfileset src="${path.variable.maven_repository}/org/json/json/20171018/json-20171018.jar"/>
-      <zipfileset src="${path.variable.maven_repository}/postgresql/postgresql/9.1-901.jdbc4/postgresql-9.1-901.jdbc4.jar"/>
-      <zipfileset src="${path.variable.maven_repository}/org/junit/platform/junit-platform-commons/1.1.0-M1/junit-platform-commons-1.1.0-M1.jar"/>
-      <zipfileset src="${path.variable.maven_repository}/org/apache/commons/commons-lang3/3.0/commons-lang3-3.0.jar"/>
-      <zipfileset src="${path.variable.maven_repository}/org/junit/platform/junit-platform-launcher/1.0.2/junit-platform-launcher-1.0.2.jar"/>
-      <zipfileset src="${path.variable.maven_repository}/org/apache/maven/surefire/common-java5/2.19.1/common-java5-2.19.1.jar"/>
-      <zipfileset src="${path.variable.maven_repository}/org/junit/platform/junit-platform-engine/1.0.2/junit-platform-engine-1.0.2.jar"/>
-      <zipfileset src="${path.variable.maven_repository}/org/opentest4j/opentest4j/1.0.0/opentest4j-1.0.0.jar"/>
-      <zipfileset src="${path.variable.maven_repository}/org/apache/maven/surefire/surefire-api/2.19.1/surefire-api-2.19.1.jar"/>
-    </jar>
-    <copy file="${temp.jar.path.ChristmasCracker.jar}" tofile="${artifact.temp.output.christmascracker:jar}/ChristmasCracker.jar"/>
+  <target name="clean.artifact.christmascracker" description="clean ChristmasCracker artifact output">
+    <delete dir="${artifact.output.christmascracker}"/>
   </target>
   
-  <target name="build.all.artifacts" depends="artifact.christmascracker:jar" description="Build all artifacts">
-    <mkdir dir="${artifact.output.christmascracker:jar}"/>
-    <copy todir="${artifact.output.christmascracker:jar}">
-      <fileset dir="${artifact.temp.output.christmascracker:jar}"/>
+  <target name="artifact.christmascracker" depends="init.artifacts, compile.module.christmascracker" description="Build &#39;ChristmasCracker&#39; artifact" xmlns:fx="javafx:com.sun.javafx.tools.ant">
+    <mkdir dir="${artifact.output.christmascracker}"/>
+    <copy todir="${artifact.temp.output.ChristmasCracker}">
+      <fileset dir="${christmascracker.output.dir}"/>
     </copy>
+    <fx:fileset id="all_but_ChristmasCracker" dir="${artifact.temp.output.ChristmasCracker}" includes="**/*.jar">
+      <exclude name="ChristmasCracker.jar"/>
+    </fx:fileset>
+    <fx:fileset id="all_ChristmasCracker" dir="${artifact.temp.output.ChristmasCracker}" includes="**/*.jar"/>
+    <fx:application id="ChristmasCracker_id" name="ChristmasCracker" mainClass="_app"/>
+    <fx:jar destfile="${artifact.temp.output.ChristmasCracker}/ChristmasCracker.jar">
+      <fx:application refid="ChristmasCracker_id"/>
+      <fileset dir="${artifact.temp.output.ChristmasCracker}" excludes="**/*.jar"/>
+      <fx:resources>
+        <fx:fileset refid="all_but_ChristmasCracker"/>
+      </fx:resources>
+      <manifest>
+        <attribute name="Implementation-Title" value="Databases"/>
+        <attribute name="Implementation-Version" value=""/>
+        <attribute name="Implementation-Vendor" value="Mihai"/>
+      </manifest>
+    </fx:jar>
+    <fx:deploy width="1300" height="710" updatemode="background" outdir="${artifact.temp.output.ChristmasCracker}/deploy" outfile="ChristmasCracker">
+      <fx:application refid="ChristmasCracker_id"/>
+      <fx:info title="Databases" vendor="Mihai" description="Databases Application"/>
+      <fx:resources>
+        <fx:fileset refid="all_ChristmasCracker"/>
+      </fx:resources>
+    </fx:deploy>
+    <copy todir="${artifact.output.christmascracker}">
+      <fileset dir="${artifact.temp.output.ChristmasCracker}/deploy"/>
+    </copy>
+    <delete includeemptydirs="true">
+      <fileset dir="${artifact.temp.output.ChristmasCracker}"/>
+    </delete>
+  </target>
+  
+  <target name="build.all.artifacts" depends="artifact.christmascracker" description="Build all artifacts">
     
     <!-- Delete temporary files -->
     <delete dir="${artifacts.temp.dir}"/>
