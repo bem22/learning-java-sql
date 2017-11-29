@@ -10,7 +10,11 @@ import javafx.scene.control.TextField;
 import javafx.scene.layout.GridPane;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
+import org.apache.commons.lang3.StringUtils;
+import org.postgresql.util.PSQLException;
+
 import java.net.URL;
+import java.sql.SQLException;
 import java.util.ResourceBundle;
 
 public class _add_controller implements Initializable{
@@ -39,6 +43,9 @@ public class _add_controller implements Initializable{
     Text percentageText;
 
     @FXML
+    Text infoMsg;
+
+    @FXML
     public void closeAddPane(ActionEvent e){
         Stage stage = (Stage) closeAddButton.getScene().getWindow();
         _app_controller.setAdd_Closed();
@@ -50,11 +57,11 @@ public class _add_controller implements Initializable{
         percentageText.setText(String.valueOf((int)percentageSlider.getValue()));
     }
 
-    public void setContentType(String contentType) {
+    void setContentType(String contentType) {
         this.contentType = contentType;
     }
 
-    public void setModel(_app_model m){
+    void setModel(_app_model m){
         this.m = m;
     }
 
@@ -78,20 +85,40 @@ public class _add_controller implements Initializable{
                 m.addGift(Integer.valueOf(a[0]),a[1], Integer.valueOf(a[2]));
                 break;
             case "crackers":
-                m.addCracker(Integer.valueOf(a[0]), a[1], Integer.valueOf(a[2]),Integer.valueOf(a[3]), Integer.valueOf(a[4]), Integer.valueOf(a[5]), (int)percentageSlider.getValue());
+                try {
+                    if(StringUtils.isAlphanumeric(a[2]) && StringUtils.isNumeric(a[0]) &&StringUtils.isNumeric(a[2]) &&StringUtils.isNumeric(a[3]) &&StringUtils.isNumeric(a[4]) &&StringUtils.isNumeric(a[5])) {
+                        if((Integer.valueOf(a[0]) > 0) && (Integer.valueOf(a[2])>0) && (Integer.valueOf(a[3])>0) && (Integer.valueOf(a[4])>0) && (Integer.valueOf(a[5])>0)){
+                            System.out.println("Hello");
+                            m.addCracker(Integer.valueOf(a[0]), a[1], Integer.valueOf(a[2]), Integer.valueOf(a[3]), Integer.valueOf(a[4]), Integer.valueOf(a[5]), (int) percentageSlider.getValue());
+                            infoMsg.setText("You have added the cracker successfully");
+                        }
+                        else infoMsg.setText("You might have negative values in your input");
+                    }
+                    else infoMsg.setText("Your input might try to spoil the database.");
+                } catch (PSQLException e){
+                    infoMsg.setText("Data either does not exist or is duplicate");
+                    e.printStackTrace();
+
+                } catch (SQLException e) {
+                    infoMsg.setText("Cracker already present in DB");
+                    e.printStackTrace();
+                }
+
+
         }
 
     }
 
 
 
-    public void showColumns(){
+    void showColumns(){
         ObservableList<TableColumn> tc = m.getColumns(contentType);
         columnContainer.add(new Text("Fill this form and click \"Add\" "),0,0);
         int columnCount = m.getColumns(contentType).size();
-        if (contentType.equals("crackers")); columnCount--;
+        if (contentType.equals("crackers")){
+            columnCount--;
+        }
         for(int i=1; i<=columnCount; i++){
-
             TextField text = new TextField();
             text.setPromptText(tc.get(i-1).getText());
             columnContainer.add(text, 0, i);

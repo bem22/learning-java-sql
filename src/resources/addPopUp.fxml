@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.text.*?>
 <?import java.lang.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
@@ -21,5 +22,6 @@
         </rowConstraints>
       </GridPane>
       <Slider fx:id="percentageSlider" blockIncrement="1.0" layoutX="207.0" layoutY="125.0" max="200.0" prefHeight="16.0" prefWidth="119.0" showTickLabels="true" showTickMarks="true" value="15.0" />
+      <Text fx:id="infoMsg" layoutX="36.0" layoutY="263.0" strokeType="OUTSIDE" strokeWidth="0.0" />
    </children>
 </AnchorPane>

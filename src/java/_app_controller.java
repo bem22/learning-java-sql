@@ -40,7 +40,8 @@ public class _app_controller implements Initializable{
     @FXML
     private TextField searchBox;
 
-
+    @FXML
+    private Text connectionInfo;
     @FXML
     private Button populate;
 
@@ -66,6 +67,7 @@ public class _app_controller implements Initializable{
         ArrayList<String> s = DBUtils.getTableNames(c);
         this.tableCombobox.setItems(FXCollections.observableArrayList(s));
         getReport.setDisable(true);
+        connectionInfo.setText("You are connected to: " + m.url);
     }
     @FXML
     public void closeWindow(ActionEvent close){
@@ -137,7 +139,6 @@ public class _app_controller implements Initializable{
         String  s="";
         s += table.getSelectionModel().getSelectedItem();
 
-        System.out.println(s);
         if(!table.getSelectionModel().isEmpty()) {
             return Integer.valueOf(s.substring(1, s.indexOf(' ') - 1));
         }
@@ -173,10 +174,7 @@ public class _app_controller implements Initializable{
     @FXML
     public void getJokeReport(){
 
-        int jroyal = m.getJokeRoyalty(getId());
-        reportText.setText(""+m.getPaymentDue(getId())
-
-
+        reportText.setText("This joke has a royalty of: " + m.getJokeRoyalty(getId()) + " and a payment due of: " + m.getPaymentDue(getId())
         );
 
 
@@ -185,7 +183,7 @@ public class _app_controller implements Initializable{
     @FXML
     public void getReport(ActionEvent e){
         if(getId()!=0) {
-            numberOfEntries.setText(":Ds");
+            numberOfEntries.setText(":D");
             if (tableCombobox.getValue().equals("crackers")) {
                 getCrackerReport();
             } else if (tableCombobox.getValue().equals("jokes")) {

@@ -48,5 +48,6 @@
             </TextFlow>
          </content>
       </ScrollPane>
+      <Text fx:id="connectionInfo" layoutX="168.0" layoutY="564.0" strokeType="OUTSIDE" strokeWidth="0.0" textAlignment="CENTER" wrappingWidth="822.0" />
    </children>
 </AnchorPane>

@@ -14,26 +14,25 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.Random;
 
 import static org.apache.commons.lang3.math.NumberUtils.isDigits;
 
-public class _app_model {
-    OkHttpClient client;
-    String giftAPI = "https://randomapi.com/api/0z3zu0yn?key=LWDP-98HG-JI1N-WQY6&results=20";
-    String hatAPI = "https://randomapi.com/api/b5xkyv97?key=8F47-34PG-ZO78-E8XG&results=20";
-    String crackerAPI = "https://randomapi.com/api/cmyz100t?key=R7MX-PY30-DETX-1IKW&results=20";
-    String jokeAPI = "http://api.icndb.com/jokes/random/600";
-    String numberAPI = "https://randomapi.com/api/0z3zu0yn?key=LWDP-98HG-JI1N-WQY6" ;
-    String url1 = "jdbc:postgresql://mod-intro-databases.cs.bham.ac.uk/meb648";
-    String url = "jdbc:postgresql://localhost/christmas";
-    String user1 = "meb648";
-    String user = "mihai";
-    String password1 = "Asd123asd";
-    String password = "password123";
+class _app_model {
+    private OkHttpClient client;
+    //String giftAPI = "https://randomapi.com/api/0z3zu0yn?key=LWDP-98HG-JI1N-WQY6&results=20";
+    //String hatAPI = "https://randomapi.com/api/b5xkyv97?key=8F47-34PG-ZO78-E8XG&results=20";
+    private String crackerAPI = "https://randomapi.com/api/ghww4124?key=O68A-YYPT-I3H1-KJ1G&results=20";
+    //String jokeAPI = "http://api.icndb.com/jokes/random/600";
+    //String numberAPI = "https://randomapi.com/api/0z3zu0yn?key=LWDP-98HG-JI1N-WQY6" ;
+    String url = "jdbc:postgresql://mod-intro-databases.cs.bham.ac.uk/meb648";
+    //String url1 = "jdbc:postgresql://localhost/christmas";
+    private String user = "meb648";
+    //String user1 = "mihai";
+    private String password = "Asd123asd";
+    //String password1 = "password123";
     Connection connection;
 
-    public _app_model(){
+    _app_model(){
         try{
             client = new OkHttpClient();
             this.connection= DBUtils.getConnectionPSQL(url, user, password);
@@ -42,10 +41,13 @@ public class _app_model {
         }
     }
 
+    /*
     public boolean isConnected(){
         return this.connection !=null;
     }
+    */
 
+    /*
     public int count(String table){
         PreparedStatement psm;
         String query = "SELECT COUNT(1) AS COUNT FROM " + table;
@@ -63,8 +65,9 @@ public class _app_model {
 
 
     }
+    */
 
-    public ObservableList<TableColumn> getColumns(String table){
+    ObservableList<TableColumn> getColumns(String table){
         ObservableList <TableColumn> columns = FXCollections.observableArrayList();
         String query = "SELECT * FROM " + table;
         try{
@@ -86,7 +89,7 @@ public class _app_model {
 
     }
 
-    public ObservableList<ObservableList> getData(String table){
+    ObservableList<ObservableList> getData(String table){
         ObservableList<ObservableList> data = FXCollections.observableArrayList();
         try {
             String query = "SELECT * FROM " + table;
@@ -108,7 +111,7 @@ public class _app_model {
 
     }
 
-    public ObservableList<ObservableList> getData(String table, String object){
+    ObservableList<ObservableList> getData(String table, String object){
         ObservableList<ObservableList> data = FXCollections.observableArrayList();
         String columnName;
         try {
@@ -129,7 +132,6 @@ public class _app_model {
             }
 
         } catch (Exception e) {
-            System.out.println("item/s not found");
 
         }
 
@@ -137,7 +139,7 @@ public class _app_model {
 
     }
 
-    public void populateJokes(){
+    /*public void populateJokes(){
         //Jokes
         PreparedStatement psm;
         String query = "INSERT INTO Jokes VALUES(?,?,?)";
@@ -161,19 +163,21 @@ public class _app_model {
 
 
     }
+    */
 
-    public void populateCrackers(){
+    void populateCrackers(){
         PreparedStatement psm;
         String queryJoke = "(SELECT jid FROM Jokes WHERE jid=?)";
         String queryHat = "(SELECT hid FROM Hats WHERE hid=?)";
         String queryGift = "(SELECT gid FROM Gifts WHERE gid=?)";
 
-        String query = "INSERT INTO Crackers(cid, name, jid, hid, gid, quantity) VALUES(" +
+        String query = "INSERT INTO Crackers(cid, name, jid, hid, gid, quantity, saleprice) VALUES(" +
                 "?, " +
                 "?, " +
                 queryJoke + ", " +
                 queryHat + ", " +
                 queryGift + ", " +
+                "?, " +
                 "?)";
 
 
@@ -190,7 +194,7 @@ public class _app_model {
                 psm.setInt(4, crackers.getJSONObject(j).getInt("rhat"));
                 psm.setInt(5, crackers.getJSONObject(j).getInt("rgift"));
                 psm.setInt(6, crackers.getJSONObject(j).getInt("cquantity"));
-
+                psm.setInt(7, 100);
                 psm.execute();
 
 
@@ -200,7 +204,7 @@ public class _app_model {
             }
         }
     }
-
+    /*
     public void populateHats(){
         PreparedStatement psm;
         String query = "INSERT INTO Hats VALUES(?,?,?)";
@@ -221,7 +225,8 @@ public class _app_model {
             }catch (Exception e){e.printStackTrace();continue;}
         }
     }
-
+    */
+    /*
     public void populateGifts(){
 
         PreparedStatement psm;
@@ -242,7 +247,8 @@ public class _app_model {
             }catch (Exception e){e.printStackTrace();continue;}
         }
     }
-
+    */
+    /*
     public void createTables(){
         String createJokesQuery ="CREATE TABLE Jokes(" +
                 "  jid INTEGER," +
@@ -288,7 +294,8 @@ public class _app_model {
             e.printStackTrace();
         }
     }
-
+    */
+    /*
     public void dropTables() {
 
         String query1 = "DROP TABLE Crackers",
@@ -305,8 +312,8 @@ public class _app_model {
             e.printStackTrace();
         }
     }
-
-    public void removeId(String table, int id){
+    */
+    void removeId(String table, int id){
         String query = "DELETE FROM " + table + " WHERE " + table.substring(0,1) + "id " + "=" + id;
         try{
             PreparedStatement psm = connection.prepareStatement(query);
@@ -316,7 +323,8 @@ public class _app_model {
             e.printStackTrace();
         }
     }
-    public void addCracker(int cid, String name, int jid, int hid, int gid, int quantity, int deviation){
+
+    void addCracker(int cid, String name, int jid, int hid, int gid, int quantity, int deviation) throws SQLException{
         String query = "INSERT INTO Crackers(cid, name, jid, hid, gid, quantity, saleprice) VALUES(?,?,?,?,?,?,?)";
         String queryPrice = "SELECT SUM(price) FROM " +
                 "(SELECT price from Hats WHERE hid=?" +
@@ -325,31 +333,31 @@ public class _app_model {
                 "UNION " +
                 "SELECT royalty from Jokes where jid=?) AS price";
 
-        try {
-            PreparedStatement psm = connection.prepareStatement(query);
-            PreparedStatement priceStatement = connection.prepareStatement(queryPrice);
-            priceStatement.setInt(1, hid);
-            priceStatement.setInt(2, gid);
-            priceStatement.setInt(3, jid);
-            ResultSet priceResult = priceStatement.executeQuery();
-            priceResult.next();
 
-            double proffit = deviation / 100 * priceResult.getInt(1);
-            int price = (int)proffit + priceResult.getInt(1);
+        PreparedStatement psm = connection.prepareStatement(query);
+        PreparedStatement priceStatement = connection.prepareStatement(queryPrice);
+        priceStatement.setInt(1, hid);
+        priceStatement.setInt(2, gid);
+        priceStatement.setInt(3, jid);
+        ResultSet priceResult = priceStatement.executeQuery();
+        priceResult.next();
 
-            psm.setInt(1, cid);
-            psm.setString(2, name);
-            psm.setInt(3, jid);
-            psm.setInt(4, hid);
-            psm.setInt(5, gid);
-            psm.setInt(6, quantity);
-            psm.setInt(7, price);
-            psm.executeUpdate();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
+        double proffit = deviation / 100 * priceResult.getInt(1);
+        int price = (int)proffit + priceResult.getInt(1);
+
+        psm.setInt(1, cid);
+        psm.setString(2, name);
+        psm.setInt(3, jid);
+        psm.setInt(4, hid);
+        psm.setInt(5, gid);
+        psm.setInt(6, quantity);
+        psm.setInt(7, price);
+        psm.executeUpdate();
+
+
     }
-    public void addHat(int hid, String description, int price){
+
+     void addHat(int hid, String description, int price){
         String query = "INSERT INTO Hats(hid, description, price) VALUES(?,?,?)";
         try{
             PreparedStatement psm = connection.prepareStatement(query);
@@ -357,11 +365,11 @@ public class _app_model {
             psm.setString(2, description);
             psm.setInt(3, price);
             psm.executeUpdate();
-        }catch (Exception e){
+        }catch (SQLException e){
             e.printStackTrace();
         }
     }
-    public void addJoke(int jid, String joke, int royalty){
+    void addJoke(int jid, String joke, int royalty){
         String query = "INSERT INTO Jokes(jid, joke, royalty) VALUES(?,?,?)";
         try{
             PreparedStatement psm = connection.prepareStatement(query);
@@ -373,7 +381,7 @@ public class _app_model {
             e.printStackTrace();
         }
     }
-    public void addGift(int gid, String description, int price){
+    void addGift(int gid, String description, int price){
         String query = "INSERT INTO Gifts(gid, description, price) VALUES(?,?,?)";
         try{
             PreparedStatement psm = connection.prepareStatement(query);
@@ -387,7 +395,7 @@ public class _app_model {
     }
 
 
-    public String getJokeString(int id){
+    String getJokeString(int id){
         String query = "SELECT joke FROM Jokes where jid = ?";
         try {
             PreparedStatement psm = connection.prepareStatement(query);
@@ -397,12 +405,11 @@ public class _app_model {
             return rs.getString("joke");
         } catch (SQLException e) {
             e.printStackTrace();
-            System.out.println("1");
         }
         return "";
     }
 
-    public int getJokeRoyalty(int id){
+    int getJokeRoyalty(int id){
         String query = "SELECT royalty FROM Jokes where jid = ?";
         try {
             PreparedStatement psm = connection.prepareStatement(query);
@@ -412,12 +419,11 @@ public class _app_model {
             return rs.getInt("royalty");
         } catch (SQLException e) {
             e.printStackTrace();
-            System.out.println("2");
         }
         return 0;
     }
 
-    public String getGiftDescription(int id){
+    String getGiftDescription(int id){
         String query = "SELECT description FROM Gifts where gid = ?";
         try {
             PreparedStatement psm = connection.prepareStatement(query);
@@ -427,12 +433,11 @@ public class _app_model {
             return rs.getString("description");
         } catch (SQLException e) {
             e.printStackTrace();
-            System.out.println("3");
         }
         return "";
     }
 
-    public String getHatDescription(int id){
+    String getHatDescription(int id){
         String query = "SELECT description FROM Hats where hid = ?";
         try {
             PreparedStatement psm = connection.prepareStatement(query);
@@ -443,12 +448,11 @@ public class _app_model {
         } catch (SQLException e) {
             e.printStackTrace();
 
-            System.out.println("4");
         }
         return "";
     }
 
-    public int getGiftPrice(int id){
+    int getGiftPrice(int id){
         String query = "SELECT price FROM Gifts where gid = ?";
         try {
             PreparedStatement psm = connection.prepareStatement(query);
@@ -458,13 +462,12 @@ public class _app_model {
             return rs.getInt("price");
         } catch (SQLException e) {
             e.printStackTrace();
-            System.out.println("5");
         }
         return 0;
 
     }
 
-    public int getHatPrice(int id){
+    int getHatPrice(int id){
         String query = "SELECT price FROM Hats where hid = ?";
         try {
             PreparedStatement psm = connection.prepareStatement(query);
@@ -474,12 +477,11 @@ public class _app_model {
             return rs.getInt("price");
         } catch (SQLException e) {
             e.printStackTrace();
-            System.out.println("6");
         }
         return 0;
     }
 
-    public int getCrackerHID(int cid){
+    int getCrackerHID(int cid){
         String query = "SELECT hid FROM Crackers where cid = ?";
         try {
             PreparedStatement psm = connection.prepareStatement(query);
@@ -489,12 +491,11 @@ public class _app_model {
             return rs.getInt("hid");
         } catch (SQLException e) {
             e.printStackTrace();
-            System.out.println("7");
         }
         return 0;
     }
 
-    public int getCrackerJID(int cid){
+    int getCrackerJID(int cid){
 
         String query = "SELECT jid FROM Crackers where cid = ?";
         try {
@@ -505,14 +506,13 @@ public class _app_model {
             return rs.getInt("jid");
         } catch (SQLException e) {
             e.printStackTrace();
-
-            System.out.println("8");
         }
         return 0;
 
     }
 
-    public int getCrackerGID(int cid){
+
+    int getCrackerGID(int cid){
 
         String query = "SELECT gid FROM Crackers where cid = ?";
         try {
@@ -528,7 +528,7 @@ public class _app_model {
         return 0;
     }
 
-    public int getCrackerSalePrice(int cid){
+    int getCrackerSalePrice(int cid){
         String query = "SELECT salePrice FROM Crackers where cid = ?";
         try {
             PreparedStatement psm = connection.prepareStatement(query);
@@ -543,7 +543,7 @@ public class _app_model {
         return 0;
     }
 
-    public int getPaymentDue(int jid){
+    int getPaymentDue(int jid){
         String query = "SELECT SUM(quantity) AS payload FROM Crackers WHERE jid = ?";
         try {
             PreparedStatement psm = connection.prepareStatement(query);
@@ -557,15 +557,4 @@ public class _app_model {
         }
         return 0;
     }
-
-
-
-
-
-
-
-
-
-
-
 }
