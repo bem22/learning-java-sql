@@ -53,6 +53,8 @@ public class _app_controller implements Initializable{
     @FXML
     private Button getReport;
 
+
+
     @FXML
     private ComboBox<String> tableCombobox;
 
@@ -63,6 +65,7 @@ public class _app_controller implements Initializable{
     public void initialize(URL location, ResourceBundle resources) {
         ArrayList<String> s = DBUtils.getTableNames(c);
         this.tableCombobox.setItems(FXCollections.observableArrayList(s));
+        getReport.setDisable(true);
     }
     @FXML
     public void closeWindow(ActionEvent close){
@@ -72,7 +75,7 @@ public class _app_controller implements Initializable{
 
 
     public void setEntriesNumber(){
-        numberOfEntries.setText(String.valueOf(m.count(tableCombobox.getValue()) + " Entries"));
+        numberOfEntries.setText(String.valueOf(table.getItems().size()) + " Entries");
     }
 
     public static void setAdd_Closed(){
@@ -82,7 +85,12 @@ public class _app_controller implements Initializable{
     @FXML
     public void searchTable(){
         if(tableCombobox.getValue()!=null&&tableCombobox.getValue()!=""){
+            if(tableCombobox.getValue().equals("crackers")||tableCombobox.getValue().equals("jokes")){
+                getReport.setDisable(false);
+            }
+            else getReport.setDisable(true);
             if(!searchBox.getText().trim().equals("")){
+                numberOfEntries.setDisable(false);
                 table.getColumns().clear();
                 table.getColumns().addAll(m.getColumns(tableCombobox.getValue()));
                 table.setItems(m.getData(tableCombobox.getValue(), searchBox.getText()));
@@ -104,22 +112,36 @@ public class _app_controller implements Initializable{
                 Stage addPopUP = new Stage();
                 FXMLLoader loader = new FXMLLoader();
                 Pane root = (Pane) loader.load(getClass().getResource("addPopUp.fxml").openStream());
+                _add_controller addController = (_add_controller) loader.getController();
+                addController.setModel(m);
+                addController.setContentType(tableCombobox.getValue());
+                addController.showColumns();
+                if(tableCombobox.getValue().equals("crackers")) {
+                    addController.percentageSlider.setDisable(false);
+                }
                 Scene scene = new Scene(root);
                 addPopUP.setScene(scene);
                 addPopUP.initModality(Modality.APPLICATION_MODAL);
                 addPopUP.initStyle(StageStyle.UNDECORATED);
                 addPopUP.show();
                 addPopUP.setAlwaysOnTop(true);
+
                 addWindow_isOpen = true;
             } catch (IOException e) {
                 e.printStackTrace();
             }
         }
-
     }
+
     public int getId(){
-        String s = ""+table.getSelectionModel().getSelectedItem();
-        return Integer.valueOf(s.substring(1,s.indexOf(' ')-1));
+        String  s="";
+        s += table.getSelectionModel().getSelectedItem();
+
+        System.out.println(s);
+        if(!table.getSelectionModel().isEmpty()) {
+            return Integer.valueOf(s.substring(1, s.indexOf(' ') - 1));
+        }
+        return 0;
 
     }
     @FXML
@@ -130,18 +152,49 @@ public class _app_controller implements Initializable{
     }
 
     @FXML
-    public void getReport(ActionEvent e){
+    public void getCrackerReport(){
         int cjid = m.getCrackerJID(getId());
         int chid = m.getCrackerHID(getId());
         int cgid = m.getCrackerGID(getId());
-
+        int crackerSalePrice = m.getCrackerSalePrice(getId());
+        int crackerCostPrice = m.getGiftPrice(cgid)+m.getHatPrice(chid)+m.getJokeRoyalty(cjid);
+        reportText.setText("");
         reportText.setText(
-                "This cracker has:" + '\n' +
-                        "Joke = " + m.getJokeString(cjid) + '\n' +
-                        "Hat = " + m.getHatDescription(chid) + '\n' +
-                        "Gift = " + m.getGiftDescription(cgid) + '\n' +
-                        "and a price of... " + (m.getGiftPrice(cgid)+m.getHatPrice(chid)+m.getJokeRoyalty(cjid))
+                "This cracker has a sale price price of " + crackerSalePrice
+                        + " and a cost price of " + crackerCostPrice
+                        + ", which results in a profit of "
+                        + (crackerSalePrice-crackerCostPrice) + "."
+                        + " The joke is: "
+                        + m.getJokeString(cjid) + "\", "
+                        + " and the hat is described as: " + m.getHatDescription(chid) + ", "
+                        + "and the gift is: " + m.getGiftDescription(cgid));
+    }
+
+    @FXML
+    public void getJokeReport(){
+
+        int jroyal = m.getJokeRoyalty(getId());
+        reportText.setText(""+m.getPaymentDue(getId())
+
+
         );
+
+
+    }
+
+    @FXML
+    public void getReport(ActionEvent e){
+        if(getId()!=0) {
+            numberOfEntries.setText(":Ds");
+            if (tableCombobox.getValue().equals("crackers")) {
+                getCrackerReport();
+            } else if (tableCombobox.getValue().equals("jokes")) {
+                getJokeReport();
+
+            }
+        }
+        else numberOfEntries.setText("You have to select an item first");
+
     }
 
 

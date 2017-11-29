@@ -27,9 +27,9 @@
             <Cursor fx:constant="OPEN_HAND" />
          </cursor>
       </Button>
-      <ComboBox fx:id="tableCombobox" layoutX="14.0" layoutY="31.0" prefWidth="150.0" promptText="Chose table" />
+      <ComboBox fx:id="tableCombobox" layoutX="14.0" layoutY="31.0" onAction="#searchTable" prefWidth="150.0" promptText="Chose table" />
       <Button fx:id="queryTable" layoutX="378.0" layoutY="31.0" mnemonicParsing="false" onAction="#searchTable" text="Go" />
-      <Button fx:id="populate" layoutX="987.0" layoutY="31.0" mnemonicParsing="false" onAction="#populateG" text="populate" />
+      <Button fx:id="populate" layoutX="1118.0" layoutY="544.0" mnemonicParsing="false" onAction="#populateG" text="populate" />
       <TextField fx:id="searchBox" layoutX="194.0" layoutY="31.0" promptText="search" />
       <Button fx:id="addValue" layoutX="14.0" layoutY="64.0" mnemonicParsing="false" onAction="#addValue" text="Add" />
       <Button fx:id="removeValue" layoutX="63.0" layoutY="64.0" mnemonicParsing="false" onAction="#removeValue" text="Remove" />
@@ -39,10 +39,14 @@
             <Font size="12.0" />
          </font>
       </Text>
-      <TextFlow fx:id="report" layoutX="456.0" layoutY="29.0" prefHeight="76.0" prefWidth="408.0">
-         <children>
-            <Text fx:id="reportText" strokeType="OUTSIDE" strokeWidth="0.0" />
-         </children>
-      </TextFlow>
+      <ScrollPane layoutX="446.0" layoutY="30.0" prefHeight="75.0" prefWidth="701.0">
+         <content>
+            <TextFlow fx:id="report" prefHeight="72.0" prefWidth="699.0">
+               <children>
+                  <Text fx:id="reportText" strokeType="OUTSIDE" strokeWidth="0.0" />
+               </children>
+            </TextFlow>
+         </content>
+      </ScrollPane>
    </children>
 </AnchorPane>

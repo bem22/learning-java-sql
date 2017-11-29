@@ -2,7 +2,6 @@ import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.fxml.FXML;
 import javafx.scene.control.TableColumn;
 import javafx.util.Callback;
 import okhttp3.OkHttpClient;
@@ -30,7 +29,7 @@ public class _app_model {
     String url = "jdbc:postgresql://localhost/christmas";
     String user1 = "meb648";
     String user = "mihai";
-    String password1 = "Asd123asd";
+    String password2 = "Asd123asd";
     String password = "password123";
     Connection connection;
 
@@ -317,16 +316,34 @@ public class _app_model {
             e.printStackTrace();
         }
     }
-    public void addCracker(int cid, String name, int jid, int hid, int gid, int quantity){
-        String query = "INSERT INTO Crackers(cid, name, jid, hid, gid, quantity) VALUES(?,?,?,?,?,?)";
+    public void addCracker(int cid, String name, int jid, int hid, int gid, int quantity, int deviation){
+        String query = "INSERT INTO Crackers(cid, name, jid, hid, gid, quantity, saleprice) VALUES(?,?,?,?,?,?,?)";
+        String queryPrice = "SELECT SUM(price) FROM " +
+                "(SELECT price from Hats WHERE hid=?" +
+                "UNION " +
+                "SELECT price from Gifts where gid=?" +
+                "UNION " +
+                "SELECT royalty from Jokes where jid=?) AS price";
+
         try {
             PreparedStatement psm = connection.prepareStatement(query);
+            PreparedStatement priceStatement = connection.prepareStatement(queryPrice);
+            priceStatement.setInt(1, hid);
+            priceStatement.setInt(2, gid);
+            priceStatement.setInt(3, jid);
+            ResultSet priceResult = priceStatement.executeQuery();
+            priceResult.next();
+
+            double proffit = deviation / 100 * priceResult.getInt(1);
+            int price = (int)proffit + priceResult.getInt(1);
+
             psm.setInt(1, cid);
             psm.setString(2, name);
             psm.setInt(3, jid);
             psm.setInt(4, hid);
             psm.setInt(5, gid);
             psm.setInt(6, quantity);
+            psm.setInt(7, price);
             psm.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
@@ -368,6 +385,7 @@ public class _app_model {
             e.printStackTrace();
         }
     }
+
 
     public String getJokeString(int id){
         String query = "SELECT joke FROM Jokes where jid = ?";
@@ -506,11 +524,39 @@ public class _app_model {
         } catch (SQLException e) {
             e.printStackTrace();
 
-            System.out.println("9");
         }
         return 0;
     }
 
+    public int getCrackerSalePrice(int cid){
+        String query = "SELECT salePrice FROM Crackers where cid = ?";
+        try {
+            PreparedStatement psm = connection.prepareStatement(query);
+            psm.setInt(1, cid);
+            ResultSet rs = psm.executeQuery();
+            rs.next();
+            return rs.getInt("saleprice");
+        } catch (SQLException e) {
+            e.printStackTrace();
+
+        }
+        return 0;
+    }
+
+    public int getPaymentDue(int jid){
+        String query = "SELECT SUM(quantity) AS payload FROM Crackers WHERE jid = ?";
+        try {
+            PreparedStatement psm = connection.prepareStatement(query);
+            psm.setInt(1, jid);
+
+            ResultSet rs = psm.executeQuery();
+            rs.next();
+            return rs.getInt("payload") * getJokeRoyalty(jid);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return 0;
+    }
 
 
 
